@@ -22,8 +22,6 @@ public class CASCFunc
         CascNameEKey                               
     }
 
-
-
     public enum CASC_FILE_INFO_CLASS
     {
         CascFileContentKey,
@@ -102,7 +100,17 @@ public class CASCFunc
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x04)]
         public byte[] temp;
 
-    }   
+    }
+
+    // Not used currently
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct CASC_STORAGE_PRODUCT
+    {        
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 0x1C)]
+        public char[] szCodeName;        // Code name of the product ("wowt" = "World of Warcraft PTR")
+        public int BuildNumber;          // Build number. If zero, then CascLib didn't recognize build number
+
+    }
 
     [DllImport("_ascLib", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.StdCall)]
     unsafe public static extern bool CascGetFileSize64(System.IntPtr hFile, long* PtrFileSize);
@@ -111,8 +119,8 @@ public class CASCFunc
     unsafe public static extern bool CascOpenStorage(string szParams, System.UInt32 dwLocaleMask, out System.IntPtr phStorage);
 
     [DllImport("CascLib", CharSet = CharSet.Ansi, CallingConvention = CallingConvention.Winapi)]
-    unsafe public static extern bool CascGetStorageInfo(System.IntPtr hStorage, CASC_STORAGE_INFO_CLASS InfoClass, out uint pvStorageInfo, uint cbStorageInfo,uint* pcbLengthNeeded);
-
+    unsafe public static extern bool CascGetStorageInfo(System.IntPtr hStorage, CASC_STORAGE_INFO_CLASS InfoClass, out uint pvStorageInfo, uint cbStorageInfo, uint* pcbLengthNeeded);
+    
     [DllImport("CascLib", SetLastError =true)]
     unsafe public static extern System.IntPtr CascFindFirstFile(System.IntPtr hStorage, string szMask,out CASC_FIND_DATA pFindData, string szListFile);
 
@@ -138,8 +146,8 @@ public class CASCFunc
     unsafe public static extern bool CascCloseFile(System.IntPtr hFile);
 
     [DllImport("CascLib", SetLastError =true, CallingConvention = CallingConvention.StdCall)]
-    unsafe public static extern bool CascGetFileInfo(System.IntPtr hFile, CASC_FILE_INFO_CLASS InfoClass, out CASC_FILE_FULL_INFO pvFileInfo, uint cbFileInfo, uint* pcbLengthNeeded);   
-    
+    unsafe public static extern bool CascGetFileInfo(System.IntPtr hFile, CASC_FILE_INFO_CLASS InfoClass, out CASC_FILE_FULL_INFO pvFileInfo, uint cbFileInfo, uint* pcbLengthNeeded);    
+
     [DllImport("CascLib", SetLastError =true, CallingConvention = CallingConvention.StdCall)]
     unsafe public static extern bool CascGetFileInfo(System.IntPtr hFile, CASC_FILE_INFO_CLASS InfoClass, System.IntPtr pvFileInfo, uint cbFileInfo, uint* pcbLengthNeeded);
 }

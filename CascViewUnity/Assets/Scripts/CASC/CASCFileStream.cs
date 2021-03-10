@@ -26,7 +26,7 @@ public unsafe class CASCFileStream
 
 	public bool Read(out byte[] buffer,System.Int32 count,out int bytesRead)
 	{
-		buffer = new byte[count];	
+		buffer = new byte[count];
 		IntPtr tempBuffer = Marshal.AllocHGlobal(count);
 		if (tempBuffer == System.IntPtr.Zero)
         {
